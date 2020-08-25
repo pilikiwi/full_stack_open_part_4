@@ -43,6 +43,24 @@ test('blogs are returned as json', async ()=>{
   .expect('Content-Type', /application\/json/)  
 })
 
+const addBlog = {
+    "title": "My 3rd test blog",
+    "author": "Chih Wei Hsu",
+    "url": "www.bloguriltest3.com",
+    "likes": 70
+  
+}
+
+test('1 blog added', async () => {
+  let blogObject = new Blog(addBlog)
+  await blogObject.save()
+
+  const response = await api.get('/api/blogs')
+  const titles = response.body.map(r => r.title)
+  expect(response.body.length).toBe(initialBlogs.length + 1)
+  expect(titles).toContain('My 3rd test blog')
+})
+
 afterAll(()=>{
     mongoose.connection.close()
 })
