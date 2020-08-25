@@ -32,6 +32,16 @@ blogsRouter.get('/:id', async (req, res) => {
     await Blog.findByIdAndRemove(req.params.id)
     res.status(204).end()
   })
-   
+  
+  blogsRouter.put('/:id', async (req, res)=>{
+    const body = req.body
+
+    const updatedBlog = {
+      likes: body.likes
+    }
+    await Blog.findByIdAndUpdate(req.params.id, updatedBlog, { new: true })
+    res.status(200).end()
+  })
+
   module.exports = blogsRouter
   
